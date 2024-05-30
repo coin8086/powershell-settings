@@ -1,1 +1,1 @@
-# powershell-settings
+# PowerShell Settings
