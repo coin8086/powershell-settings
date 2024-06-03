@@ -8,13 +8,16 @@ Set-Alias -Name vi -Value vim
 # Install the module by
 # PowerShellGet\Install-Module posh-git -Scope CurrentUser -Force
 Import-Module posh-git
+$GitPromptSettings.EnableFileStatus = $false
 
 function gs {
-    git status $($args -join ' ')
+    $cmd = "git status $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 function gc_ {
-    git commit $($args -join ' ')
+    $cmd = "git commit $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 # Override predefined alias gc
@@ -22,27 +25,37 @@ function gc_ {
 Set-Alias -Name gc -Value gc_ -Option AllScope -Force
 
 function gb {
-    git branch $($args -join ' ')
+    $cmd = "git branch $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 function gd {
-    git diff -U10 $($args -join ' ')
+    $cmd = "git diff -U10 $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 function gl_ {
-    git log $($args -join ' ')
+    $cmd = "git log $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 # Override predefined alias gl
 # Note: The AllScope option cannot be removed from the original definition
 Set-Alias -Name gl -Value gl_ -Option AllScope -Force
 
+function glns {
+    $cmd = "git log --name-status $($args -join ' ')"
+    Invoke-Expression $cmd
+}
+
 function gss {
-    git shortlog -s --no-merges $($args -join ' ')
+    $cmd = "git shortlog -s --no-merges $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 function gls {
-    git ls-files $($args -join ' ')
+    $cmd = "git ls-files $($args -join ' ')"
+    Invoke-Expression $cmd
 }
 
 # Autocomplete dotnet command
