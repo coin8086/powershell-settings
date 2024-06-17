@@ -1,14 +1,22 @@
 # Aliases
 
 Set-Alias -Name l -Value Get-ChildItem
+Set-Alias -Name pd -Value Push-Location
+Set-Alias -Name ppd -Value Pop-Location
 Set-Alias -Name vi -Value vim
+Set-Alias -Name time -Value Measure-Command
 
 # Autocomplete git command
 # See https://github.com/dahlbyk/posh-git
 # Install the module by
-# PowerShellGet\Install-Module posh-git -Scope CurrentUser -Force
-Import-Module posh-git
-$GitPromptSettings.EnableFileStatus = $false
+# PowerShellGet\Install-Module posh-git [-Scope CurrentUser -Force]
+if (Get-Module -Name posh-git) {
+    Import-Module posh-git
+    $GitPromptSettings.EnableFileStatus = $false
+}
+else {
+    Write-Warning 'posh-git is not found.'
+}
 
 function gs {
     $cmd = "git status $($args -join ' ')"
@@ -60,19 +68,30 @@ function gls {
 
 # Autocomplete dotnet command
 # See https://learn.microsoft.com/en-us/dotnet/core/tools/enable-tab-autocomplete#powershell
-Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
-    param($wordToComplete, $commandAst, $cursorPosition)
+try {
+    Get-Command dotnet | Out-Null
+    Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+        param($wordToComplete, $commandAst, $cursorPosition)
         dotnet complete --position $cursorPosition "$commandAst" | ForEach-Object {
             [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
         }
+    }
+}
+catch {
+    Write-Warning '.NET CLI is not found.'
 }
 
 Set-Alias -Name dotnet -Value dotnet.exe
 
 # Autocomplete docker command
 # See https://github.com/matt9ucci/DockerCompletion
-# Install-Module DockerCompletion -Scope CurrentUser
-Import-Module DockerCompletion
+# PowerShellGet\Install-Module DockerCompletion [-Scope CurrentUser]
+if (Get-Module -Name DockerCompletion) {
+    Import-Module DockerCompletion
+}
+else {
+    Write-Warning 'DockerCompletion is not found.'
+}
 
 Set-Alias -Name docker -Value docker.exe
 
