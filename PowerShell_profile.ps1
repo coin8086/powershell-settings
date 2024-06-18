@@ -10,7 +10,7 @@ Set-Alias -Name time -Value Measure-Command
 # See https://github.com/dahlbyk/posh-git
 # Install the module by
 # PowerShellGet\Install-Module posh-git [-Scope CurrentUser -Force]
-if (Get-Module -Name posh-git) {
+if (Get-Module -Name posh-git -ListAvailable) {
     Import-Module posh-git
     $GitPromptSettings.EnableFileStatus = $false
 }
@@ -86,7 +86,7 @@ Set-Alias -Name dotnet -Value dotnet.exe
 # Autocomplete docker command
 # See https://github.com/matt9ucci/DockerCompletion
 # PowerShellGet\Install-Module DockerCompletion [-Scope CurrentUser]
-if (Get-Module -Name DockerCompletion) {
+if (Get-Module -Name DockerCompletion -ListAvailable) {
     Import-Module DockerCompletion
 }
 else {
@@ -98,3 +98,4 @@ Set-Alias -Name docker -Value docker.exe
 # Autocomplete kubectl command
 # kubectl completion powershell | Out-String | Invoke-Expression
 # . "$PSScriptRoot\kubectl.completion.ps1"
+
